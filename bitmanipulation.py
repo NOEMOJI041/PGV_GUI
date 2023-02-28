@@ -2,15 +2,22 @@ class BitManipulation:
     def __init__(self):
         self.y_hex1 = 0
         self.y_hex2 = 0
+        self.x_hex1 = 0
+        self.x_hex2 = 0
         self.y_dec1 = 0
         self.y_dec2 = 0
+        self.xp = 0
         self.angvalue = 0
         self.yp = 0
 
-
-    # def x_pos(self, x_hex):
-    #     pass
-
+    def x_pos(self, x_hex):
+        if len(x_hex) <= 2:
+            return int(str(x_hex), 16)
+        else:
+            self.x_hex1 = int(str(x_hex)[2:4], 16)
+            self.x_hex2 = int(str(x_hex)[4:6], 16)
+            self.xp = self.x_hex1 - self.x_hex2 -1
+            return self.xp
 
     def y_pos(self, y_hex):
         self.y_hex1 = str(y_hex)[0:2]
