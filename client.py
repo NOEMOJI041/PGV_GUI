@@ -8,18 +8,26 @@ class Client:
         self.req_data = 0
         self.checksum_data = 0
         self.redhead_output = 0
+        self.s = 0
         self.conn()
 
+
     def conn(self):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.ip, int(self.port)))
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s.connect((self.ip, int(self.port)))
 
-        while True:
-            self.req_data = bytes.fromhex('D0')
-            self.checksum_data = bytes.fromhex('2F')
-            s.send(self.req_data)
-            s.send(self.checksum_data)
-            self.redhead_output = s.recv(61).hex()
-            return self.redhead_output
+    def output(self):
+        self.req_data = bytes.fromhex('D0')
+        self.checksum_data = bytes.fromhex('2F')
+        self.s.send(self.req_data)
+        self.s.send(self.checksum_data)
+        self.redhead_output = self.s.recv(61).hex()
+        return self.redhead_output
 
-
+#
+# if __name__ == "__main__":
+#     cl = Client()
+#
+#     while True:
+#
+#         print(cl.output())
