@@ -18,12 +18,12 @@ angle_data = str(cl.output())[16:20]
 # print(y_data)
 # print(angle_data)
 
-while True:
-    print(dm.tag_data(td))
-    print(dm.x_pos(x_data))
-    print(dm.y_pos(y_data))
-    print(dm.angle_value(angle_data))
-    print(dm.angle_degree(angle_data))
+
+print(dm.tag_data(td))
+print(dm.x_pos(x_data))
+print(dm.y_pos(y_data))
+print(dm.angle_value(angle_data))
+print(dm.angle_degree(angle_data))
 
 
 # app = QtWidgets.QApplication(sys.argv)

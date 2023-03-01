@@ -9,10 +9,22 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from bitmanipulation import BitManipulation
+from client import Client
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.cl = 0
+        self.dm = 0
+        self.t = 0
+        self.x_data = 0
+        self.y_data = 0
+        self.angle_data = 0
+        self.a = 0
+        self.b = 0
+        self.c = 0
+        self.d = 0
+        self.e = 0
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(841, 632)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -130,6 +142,20 @@ class Ui_MainWindow(object):
         self.label_16 = QtWidgets.QLabel(self.page_3)
         self.label_16.setGeometry(QtCore.QRect(260, 230, 47, 13))
         self.label_16.setObjectName("label_16")
+        self.pushButton_4 = QtWidgets.QPushButton(self.page_3)
+        self.pushButton_4.setGeometry(QtCore.QRect(120, 340, 181, 81))
+        font = QtGui.QFont()
+        font.setFamily("8514oem")
+        self.pushButton_4.setFont(font)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_5 = QtWidgets.QPushButton(self.page_3)
+        self.pushButton_5.setGeometry(QtCore.QRect(490, 340, 181, 81))
+        font = QtGui.QFont()
+        font.setFamily("8514oem")
+        font.setBold(False)
+        font.setWeight(50)
+        self.pushButton_5.setFont(font)
+        self.pushButton_5.setObjectName("pushButton_5")
         self.stackedWidget.addWidget(self.page_3)
         self.page_4 = QtWidgets.QWidget()
         self.page_4.setObjectName("page_4")
@@ -150,9 +176,59 @@ class Ui_MainWindow(object):
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # self.pushButton.clicked.connect(self.conclick)
-        # self.pushButton_2.clicked.connect(self.imgclick)
-        # self.pushButton_3.clicked.connect(self.posclick)
+        self.pushButton.clicked.connect(self.clickcon)
+        self.pushButton_2.clicked.connect(self.pos)
+        self.pushButton_3.clicked.connect(self.img)
+        self.pushButton_4.clicked.connect(self.clickdata)
+        self.pushButton_5.clicked.connect(self.pos_update)
+
+    def pos(self):
+        self.stackedWidget.setCurrentIndex(2)
+
+    def img(self):
+        self.stackedWidget.setCurrentIndex(3)
+
+    def clickcon(self):
+        self.stackedWidget.setCurrentIndex(1)
+        self.cl = Client()
+        self.dm = BitManipulation()
+
+    def clickdata(self):
+        self.td = str(self.cl.output())[2:4]
+        self.x_data = str(self.cl.output())[4:12]
+        self.y_data = str(self.cl.output())[12:16]
+        self.angle_data = str(self.cl.output())[16:20]
+
+        print(self.dm.tag_data(self.td))
+        print(self.dm.x_pos(self.x_data))
+        print(self.dm.y_pos(self.y_data))
+        print(self.dm.angle_value(self.angle_data))
+        print(self.dm.angle_degree(self.angle_data))
+
+        self.a = "True"
+        self.b = self.dm.x_pos(self.x_data)
+        self.c = self.dm.y_pos(self.y_data)
+        self.d = self.dm.angle_value(self.angle_data)
+        self.e = self.dm.angle_degree(self.angle_data)
+        self.update()
+
+    def pos_update(self):
+        self.label_12.setText(self.a)
+        self.label_8.setText(str(self.b))
+        self.label_10.setText(str(self.c))
+        self.label_14.setText(str(self.d))
+        self.label_16.setText(str(self.e))
+        self.update()
+
+    def update(self):
+        self.label_12.adjustSize()
+        self.label_8.adjustSize()
+        self.label_10.adjustSize()
+        self.label_14.adjustSize()
+        self.label_16.adjustSize()
+
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -172,14 +248,11 @@ class Ui_MainWindow(object):
         self.label_14.setText(_translate("MainWindow", "a"))
         self.label_15.setText(_translate("MainWindow", "Angle Degree"))
         self.label_16.setText(_translate("MainWindow", "d"))
+        self.pushButton_4.setText(_translate("MainWindow", "GET DATA"))
+        self.pushButton_5.setText(_translate("MainWindow", "GET POS"))
         self.label_6.setText(_translate("MainWindow", "Image"))
 
-    def conclick(self):
-        self.stackedWidget.setCurrentIndex(1)
-    def posclick(self):
-        self.stackedWidget.setCurrentIndex(3)
-    def imgclick(self):
-        self.stackedWidget.setCurrentIndex(2)
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
