@@ -3,12 +3,16 @@ import socket
 
 class Client:
     def __init__(self):
-        self.ip = "192.168.2.2"
-        self.port = "50020"
+        # self.ip = "192.168.2.2"
+        # self.port = "50020"
         self.req_data = 0
         self.checksum_data = 0
         self.redhead_output = 0
         self.s = 0
+
+    def getip(self, ip1, port1):
+        self.ip = ip1
+        self.port = int(port1)
         self.conn()
 
 

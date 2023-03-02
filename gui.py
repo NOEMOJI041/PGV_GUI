@@ -15,6 +15,8 @@ from client import Client
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.ip = 0
+        self.port = 0
         self.cl = 0
         self.dm = 0
         self.t = 0
@@ -45,11 +47,11 @@ class Ui_MainWindow(object):
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.lineEdit = QtWidgets.QLineEdit(self.page)
         self.lineEdit.setGeometry(QtCore.QRect(630, 190, 113, 20))
-        self.lineEdit.setText("")
+        self.lineEdit.setText("192.168.2.2")
         self.lineEdit.setObjectName("lineEdit")
         self.label_2 = QtWidgets.QLabel(self.page)
         self.label_2.setGeometry(QtCore.QRect(50, 100, 361, 331))
-        self.label_2.setText("")
+        self.label_2.setText("50020")
         self.label_2.setPixmap(QtGui.QPixmap("C:/Users/aloks/OneDrive/Desktop/Capture.PNG"))
         self.label_2.setScaledContents(False)
         self.label_2.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignHCenter)
@@ -181,9 +183,12 @@ class Ui_MainWindow(object):
         self.stackedWidget.setCurrentIndex(3)
 
     def clickcon(self):
+        self.ip = self.lineEdit.text()
+        self.port = self.lineEdit_2.text()
         self.stackedWidget.setCurrentIndex(1)
         self.cl = Client()
         self.dm = BitManipulation()
+        self.cl.getip(self.ip, self.port)
 
     def clickdata(self):
         self.td = str(self.cl.output())[2:4]
@@ -203,20 +208,26 @@ class Ui_MainWindow(object):
         self.d = self.dm.angle_value(self.angle_data)
         self.e = self.dm.angle_degree(self.angle_data)
 
+        if self.a == True:
+            self.label_12.setText("True")
+        else:
+            self.label_12.setText("False")
+
 
 
 
         self.label_8.setText(str(self.b))
         self.label_10.setText(str(self.c))
-        # self.label_14(str(self.d))
-        # self.label_16(str(self.d))
+        self.label_14.setText(str(self.d))
+        self.label_16.setText(str(self.e))
         self.update()
 
     def update(self):
+        self.label_12.adjustSize()
         self.label_8.adjustSize()
         self.label_10.adjustSize()
-        # self.label_14.adjustSize()
-        # self.label_16.adjustSize()
+        self.label_14.adjustSize()
+        self.label_16.adjustSize()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

@@ -1,47 +1,50 @@
+import io
 import socket
+from PIL import Image
+from PIL import ImageFilter
+
+
+
+
 
 ip = "192.168.2.2"
 port = "50020"
 
+
+
+
+
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((ip, int(port)))
+
+
+# s.send(b'\xa8'b'\x57')
+
+
+
+
+s.send(b'\x08'b'\xe0'b'\x00'b'\x00'b'\x00'b'\x00'b'\x00'b'\x00'b'\x00'b'\x00'b'\xe8')
 while True:
-    req_data = bytes.fromhex('A8')
-    checksum_data = bytes.fromhex('57')
-    s.send(req_data)
-    s.send(checksum_data)
-    redhead_output = s.recv(2000).hex()
-    print(redhead_output)
+    file_stream = io.BytesIO()
+    redhead_output = s.recv(4096)
 
-    D1 = bytes.fromhex("08")
-    D2 = bytes.fromhex("E0")
-    D3 = bytes.fromhex("00")
-    D4 = bytes.fromhex("00")
-    D5 = bytes.fromhex("00")
-    D6 = bytes.fromhex("00")
-    D7 = bytes.fromhex("00")
-    D8 = bytes.fromhex("00")
-    D9 = bytes.fromhex("E8")
-    s.send(D1)
-    s.send(D2)
-    s.send(D3)
-    s.send(D4)
-    s.send(D5)
-    s.send(D6)
-    s.send(D7)
-    s.send(D8)
-    s.send(D9)
+    while redhead_output:
+        file_stream.write(redhead_output)
+        redhead_output = s.recv(4096)
 
-    redhead_output = s.recv(5000)
-    print(redhead_output)
+    image = Image.open(file_stream)
+    image = image.filter(ImageFilter.GaussianBlur(radius = 10))
 
-# Dz = bytes.fromhex("00")
-# Dx = bytes.fromhex("FF")
-# Dc = bytes.fromhex("FF")
-# og1 = s.send(Dz)
-# og2 = s.send(Dx)
-# og3 = s.send(Dc)
-# redhead_output = s.recv(2000).hex()
-# print(redhead_output)
+    image.save('fz.jpeg', format= 'JPEG')
+
+with open('fz_ed.jpeg', 'wb') as file:
+    redhead_output = s.recv(4096)
+
+    while redhead_output:
 
 
+
+
+
+# s.send(b'\x00'b'\xff'b'\xff')
