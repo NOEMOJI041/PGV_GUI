@@ -1,28 +1,29 @@
 import socket
+from PIL import Image
 
-# Connect to the server
 HOST = "192.168.2.2"
 PORT = 50020
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((HOST, PORT))
 
-# Receive the hex representation of the image from the server
+client_socket.send(b'\x08\xe0\x00\x00\x00\x00\x00\x00\x00\x00\xe8')
+z = b''
 data = client_socket.recv(1024)
 print(data)
 while True:
-    data = client_socket.recv(1024)
-    if not data:
+    client_socket.settimeout(2)
+    try:
+        data = client_socket.recv(1024)
+    except:
         break
+    z = z + data
 
-    hex_string = data.decode('utf-8')
+b = bytearray(z)
+del b[-1:]
+a = bytes(b)
+hex_img = a.hex()
 
-    # Convert the hex string to bytes
-    image_bytes = bytes.fromhex(hex_string)
-    print(image_bytes)
+bmp_bytes = bytes.fromhex(str(hex_img))
+final_img = Image.frombytes("L", (376, 240), bmp_bytes)
 
-    # Write the bytes to a file
-    # with open('image.jpg', 'wb') as f:
-    #     f.write(image_bytes)
-
-# Close the client socket
-client_socket.close()
+final_img.show()
